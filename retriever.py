@@ -73,9 +73,12 @@ class CrossLingualRetriever:
                 'score': float(score)
             }
             
-            # Add full text if available and requested
-            if return_full_text and self.corpus_texts is not None:
-                result['text'] = self.corpus_texts[idx]
+            # Add text if available in doc_info (from index) or from corpus_texts
+            if return_full_text:
+                if 'text' in doc_info:
+                    result['text'] = doc_info['text']
+                elif self.corpus_texts is not None and idx < len(self.corpus_texts):
+                    result['text'] = self.corpus_texts[idx]
             
             results.append(result)
         

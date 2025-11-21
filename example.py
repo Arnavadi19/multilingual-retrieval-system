@@ -27,7 +27,8 @@ def demo_build_small_index():
     # Build index
     print("\n3. Building index...")
     index = VectorIndex()
-    index.build(embeddings, loader.get_corpus_ids(), loader.get_corpus_languages())
+    index.build(embeddings, loader.get_corpus_ids(), loader.get_corpus_languages(), 
+                loader.get_corpus_texts())
     
     # Save index
     print("\n4. Saving index...")
