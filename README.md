@@ -2,7 +2,7 @@
 
 A professional-grade cross-lingual information retrieval (CLIR) system that enables English queries to retrieve relevant documents from Hindi, Bengali, and Telugu corpora using multilingual dense embeddings.
 
-## 🌟 Features
+## Features
 
 - **Cross-Lingual Retrieval**: Query in English, retrieve documents in Hindi, Bengali, and Telugu
 - **Dense Vector Embeddings**: Uses state-of-the-art sentence-transformers for semantic similarity
@@ -11,7 +11,7 @@ A professional-grade cross-lingual information retrieval (CLIR) system that enab
 - **Interactive & CLI Modes**: Both command-line and interactive search interfaces
 - **GPU Support**: Automatic GPU acceleration when available
 
-## 🏗️ Architecture
+## Architecture
 
 The system is built with a modular architecture:
 
@@ -24,13 +24,13 @@ The system is built with a modular architecture:
 └── main.py            # CLI application and entry point
 ```
 
-## 📋 Prerequisites
+## Prerequisites
 
 - Python 3.8 or higher
 - CUDA-compatible GPU (optional, but recommended for faster processing)
 - At least 8GB RAM (16GB+ recommended for full corpus)
 
-## 🚀 Installation
+## Installation
 
 1. **Clone the repository**:
    ```bash
@@ -49,7 +49,7 @@ The system is built with a modular architecture:
    pip install -r requirements.txt
    ```
 
-## 📖 Usage
+## Usage
 
 ### 1. Build the Index
 
@@ -97,7 +97,7 @@ Try these example queries to test the system:
 - "Traditional dance forms in India"
 - "Renewable energy sources and solar power"
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ir-project/
@@ -118,7 +118,7 @@ ir-project/
 └── data/                  # Data directory (created automatically)
 ```
 
-## 🔧 Configuration
+## Configuration
 
 Edit `config.py` to customize:
 
@@ -127,7 +127,7 @@ Edit `config.py` to customize:
 - **Sample Size**: Set `CORPUS_SAMPLE_SIZE` to limit corpus size for testing
 - **Retrieval Parameters**: Adjust `DEFAULT_TOP_K` for number of results
 
-## 🧪 How It Works
+## How It Works
 
 1. **Data Loading**: The system loads documents from the MIRACL dataset for Hindi, Bengali, and Telugu
 2. **Embedding Generation**: Each document is encoded into a dense vector using a multilingual sentence-transformer model
@@ -136,38 +136,37 @@ Edit `config.py` to customize:
 5. **Retrieval**: Cosine similarity is used to find the most relevant documents
 6. **Ranking**: Results are ranked by similarity score and returned
 
-## 🎯 Performance Tips
+## Performance Tips
 
 - **Use GPU**: The system automatically uses CUDA if available (much faster)
 - **Sample Mode**: For testing, use `--sample-size` to work with a subset
 - **Batch Size**: Adjust `BATCH_SIZE` in `config.py` based on your GPU memory
 - **Normalized Embeddings**: Embeddings are normalized for efficient cosine similarity
 
-## 📊 Evaluation
+## Evaluation
 
 The system uses the MIRACL (Multilingual Information Retrieval Across a Continuum of Languages) dataset, which provides:
 - Large-scale multilingual corpora
 - Development and test queries with relevance judgments
 - Standard benchmarks for cross-lingual IR evaluation
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit issues or pull requests.
 
-## 📄 License
+## License
 
 This project is intended for educational and research purposes.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **MIRACL Dataset**: [https://project-miracl.github.io/](https://project-miracl.github.io/)
 - **Sentence Transformers**: [https://www.sbert.net/](https://www.sbert.net/)
 - **IR Datasets**: [https://ir-datasets.com/](https://ir-datasets.com/)
 
-## 📞 Support
+## Support
 
 For questions or issues, please open an issue on GitHub.
 
 ---
 
-**Built with ❤️ for multilingual information access**
