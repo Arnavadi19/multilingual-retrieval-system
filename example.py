@@ -3,9 +3,9 @@ Example script demonstrating the Multilingual IR System usage.
 """
 
 from data_loader import DataLoader
-from embedder import MultilingualEmbedder
-from indexer import VectorIndex
-from retriever import CrossLingualRetriever
+from core.embedder import MultilingualEmbedder
+from core.indexer import VectorIndex
+from core.retriever import CrossLingualRetriever
 from config import LANGUAGES
 
 def demo_build_small_index():
@@ -27,7 +27,8 @@ def demo_build_small_index():
     # Build index
     print("\n3. Building index...")
     index = VectorIndex()
-    index.build(embeddings, loader.get_corpus_ids(), loader.get_corpus_languages())
+    index.build(embeddings, loader.get_corpus_ids(), loader.get_corpus_languages(), 
+                loader.get_corpus_texts())
     
     # Save index
     print("\n4. Saving index...")

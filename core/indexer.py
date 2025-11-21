@@ -30,13 +30,15 @@ class VectorIndex:
         self.metadata = {
             'doc_ids': [],
             'languages': [],
+            'doc_texts': [],
             'num_documents': 0,
             'embedding_dim': 0
         }
     
     def build(self, embeddings: np.ndarray, 
               doc_ids: List[str], 
-              languages: List[str]) -> None:
+              languages: List[str],
+              doc_texts: Optional[List[str]] = None) -> None:
         """
         Build the index from embeddings and metadata.
         
@@ -44,14 +46,20 @@ class VectorIndex:
             embeddings: NumPy array of document embeddings (n_docs, embedding_dim)
             doc_ids: List of document IDs
             languages: List of document languages
+            doc_texts: List of document texts (optional, for retrieval display)
         """
         assert len(doc_ids) == len(languages) == embeddings.shape[0], \
             "Mismatch between number of embeddings and metadata"
+        
+        if doc_texts is not None:
+            assert len(doc_texts) == embeddings.shape[0], \
+                "Mismatch between number of embeddings and document texts"
         
         self.embeddings = embeddings
         self.metadata = {
             'doc_ids': doc_ids,
             'languages': languages,
+            'doc_texts': doc_texts if doc_texts is not None else [],
             'num_documents': len(doc_ids),
             'embedding_dim': embeddings.shape[1]
         }
@@ -143,10 +151,16 @@ class VectorIndex:
         Returns:
             Dictionary with document metadata
         """
-        return {
+        result = {
             'doc_id': self.metadata['doc_ids'][index],
             'language': self.metadata['languages'][index]
         }
+        
+        # Add text if available
+        if self.metadata.get('doc_texts') and index < len(self.metadata['doc_texts']):
+            result['text'] = self.metadata['doc_texts'][index]
+        
+        return result
     
     def index_exists(self) -> bool:
         """Check if index files exist on disk."""

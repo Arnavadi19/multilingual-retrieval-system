@@ -9,9 +9,9 @@ from pathlib import Path
 
 from config import LANGUAGES, CORPUS_SAMPLE_SIZE, DEFAULT_TOP_K
 from data_loader import DataLoader
-from embedder import MultilingualEmbedder
-from indexer import VectorIndex
-from retriever import CrossLingualRetriever
+from core.embedder import MultilingualEmbedder
+from core.indexer import VectorIndex
+from core.retriever import CrossLingualRetriever
 
 logging.basicConfig(
     level=logging.INFO,
@@ -52,15 +52,15 @@ def build_index(sample_size: int = None, force_rebuild: bool = False):
     embedder = MultilingualEmbedder()
     embeddings = embedder.encode_corpus(corpus_texts)
     
-    # Build and save index
+    # Build and save index (with document texts)
     logger.info("Building index...")
-    index.build(embeddings, corpus_ids, corpus_languages)
+    index.build(embeddings, corpus_ids, corpus_languages, corpus_texts)
     index.save()
     
     logger.info("✅ Index building complete!")
 
 
-def search(query: str, top_k: int = DEFAULT_TOP_K, show_text: bool = False):
+def search(query: str, top_k: int = DEFAULT_TOP_K, show_text: bool = True):
     """
     Search the index with a query.
     
@@ -81,15 +81,10 @@ def search(query: str, top_k: int = DEFAULT_TOP_K, show_text: bool = False):
     embedder = MultilingualEmbedder()
     retriever = CrossLingualRetriever(embedder, index)
     
-    # Optionally load corpus texts for display
-    if show_text:
-        logger.info("Loading corpus texts...")
-        data_loader = DataLoader(languages=list(LANGUAGES.keys()))
-        corpus_docs = data_loader.load_corpus()
-        retriever.set_corpus_texts(data_loader.get_corpus_texts())
+    # Document texts are now stored in the index, no need to reload corpus
     
     # Perform retrieval
-    results = retriever.retrieve(query, top_k=top_k, return_full_text=show_text)
+    results = retriever.retrieve(query, top_k=top_k, return_full_text=True)
     
     # Display results
     retriever.print_results(results, max_text_length=300)
@@ -113,6 +108,8 @@ def interactive_search(top_k: int = DEFAULT_TOP_K):
     # Initialize components
     embedder = MultilingualEmbedder()
     retriever = CrossLingualRetriever(embedder, index)
+    
+    # Document texts are now stored in the index, no need to reload corpus
     
     print("\n" + "="*80)
     print("Multilingual Information Retrieval System")
@@ -141,15 +138,19 @@ def interactive_search(top_k: int = DEFAULT_TOP_K):
             if not query:
                 continue
             
-            # Retrieve and display results
-            results = retriever.retrieve(query, top_k=top_k, return_full_text=False)
+            # Retrieve and display results with text snippets
+            results = retriever.retrieve(query, top_k=top_k, return_full_text=True)
             
             print(f"\n📄 Top {len(results)} Results:")
-            print("-" * 80)
+            print("=" * 80)
             for result in results:
-                print(f"  [{result['rank']}] {result['language']} | Score: {result['score']:.4f}")
-                print(f"      Doc ID: {result['doc_id']}")
-            print("-" * 80)
+                print(f"\n[{result['rank']}] {result['language']} | Score: {result['score']:.4f}")
+                print(f"Doc ID: {result['doc_id']}")
+                if 'text' in result:
+                    # Show first 250 characters
+                    text_snippet = result['text'][:250].replace('\n', ' ').strip()
+                    print(f"Text: {text_snippet}...")
+                print("-" * 80)
             
         except KeyboardInterrupt:
             print("\n\nGoodbye!")

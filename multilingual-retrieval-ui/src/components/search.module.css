@@ -1,0 +1,128 @@
+/* src/components/Search.module.css */
+
+.container {
+    /* Main wrapper styles */
+    width: 100%;
+    max-width: 2000px;
+    background-color: #242424; /* Slightly lighter inner background */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Deep shadow for depth */
+    border: 1px solid #333;
+}
+
+.title {
+    color: #61dafb; /* React/Vite accent color */
+    font-weight: 700;
+    margin-bottom: 5px;
+    font-size: 2.5em;
+    text-align: center;
+}
+
+.introText {
+    color: #aaa;
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 1.1em;
+}
+
+/* --- Search Bar Styling --- */
+.searchForm {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.searchInput {
+    flex-grow: 1;
+    padding: 12px 15px;
+    font-size: 1em;
+    border: 1px solid #444;
+    border-radius: 8px;
+    background-color: #333;
+    color: #f0f0f0;
+    transition: border-color 0.3s;
+}
+
+.searchInput:focus {
+    border-color: #61dafb;
+    outline: none;
+}
+
+.searchButton {
+    padding: 12px 25px;
+    font-size: 1em;
+    font-weight: 700;
+    background-color: #61dafb;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.searchButton:hover {
+    background-color: #4dc2ea;
+}
+
+.searchButton:active {
+    transform: scale(0.98);
+}
+
+/* --- Results Table Styling --- */
+.resultsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.95em;
+}
+
+.tableHeader {
+    background-color: #333;
+    color: #f0f0f0;
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 2px solid #61dafb;
+    font-weight: 700;
+}
+
+.tableCell {
+    padding: 12px 15px;
+    border-bottom: 1px solid #444;
+    color: #ccc;
+    text-align: left;
+    vertical-align: top;
+}
+
+/* Highlight specific columns */
+.languageCell {
+    font-weight: 700;
+    color: #ff9900; /* Distinct color for language */
+    width: 10%;
+}
+
+.scoreCell {
+    font-weight: 400;
+    color: #7aff7a; /* Green for score */
+    width: 15%;
+}
+
+.documentTextCell {
+    text-align: left;
+    vertical-align: top; /* Align text to the top of the cell */
+    font-size: 0.9em;
+    /* Ensure text breaks long words and wraps correctly */
+    word-wrap: break-word; 
+    white-space: normal;
+}
+
+.errorBox {
+    background-color: #3d1c1c; /* Dark red background */
+    color: #ff6347; /* Bright red text */
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #ff6347;
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: center;
+}
