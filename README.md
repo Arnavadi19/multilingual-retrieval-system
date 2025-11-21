@@ -1,12 +1,12 @@
 # Multilingual Information Retrieval System
 
-A professional-grade cross-lingual information retrieval (CLIR) system that enables English queries to retrieve relevant documents from Hindi, Bengali, and Telugu corpora using multilingual dense embeddings.
+A professional-grade cross-lingual information retrieval (CLIR) system that enables English queries to retrieve relevant documents from Hindi, Bengali and Telugu corpora using multilingual dense embeddings.
 
 ## Features
 
-- **Cross-Lingual Retrieval**: Query in English, retrieve documents in Hindi, Bengali, and Telugu
-- **Dense Vector Embeddings**: Uses state-of-the-art sentence-transformers for semantic similarity
-- **Scalable Architecture**: Modular design with separate components for data loading, embedding, indexing, and retrieval
+- **Cross-Lingual Retrieval**: Queries are in English and are retrieved documents in Hindi, Bengali and Telugu
+- **Dense Vector Embeddings**: Uses state-of-the-art sentence-transformers for the semantic similarity
+- **Scalable Architecture**: Modular design with separate components for data loading, embedding, indexing and retrieval
 - **Persistent Index**: Save and load pre-computed embeddings for fast retrieval
 - **Interactive & CLI Modes**: Both command-line and interactive search interfaces
 - **GPU Support**: Automatic GPU acceleration when available
@@ -65,7 +65,6 @@ python main.py build --sample-size 5000
 # Force rebuild if index already exists
 python main.py build --force-rebuild
 ```
-
 The index will be saved to the `index/` directory for reuse.
 
 ### 2. Search with Queries
@@ -145,7 +144,7 @@ Edit `config.py` to customize:
 
 ## Evaluation
 
-The system uses the MIRACL (Multilingual Information Retrieval Across a Continuum of Languages) dataset, which provides:
+The system uses the MIRACL (Multilingual Information Retrieval Across a Continuum of Languages) dataset that provides:
 - Large-scale multilingual corpora
 - Development and test queries with relevance judgments
 - Standard benchmarks for cross-lingual IR evaluation
