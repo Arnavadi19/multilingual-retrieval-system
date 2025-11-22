@@ -65,7 +65,7 @@ const SearchComponent = () => {
             {/* Apply the title and intro text classes */}
             <h1 className={styles.title}>🌍 Multilingual Retrieval System</h1>
             <p className={styles.introText}>
-                Enter your query in **English** to retrieve documents from Hindi, Bengali, and Telugu corpora.
+                Enter your query in English to retrieve documents from Hindi, Bengali, and Telugu corpora.
             </p>
 
             {/* --- Search Form --- */}
