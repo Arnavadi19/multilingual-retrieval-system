@@ -291,27 +291,8 @@ On a system with GPU (RTX 3060) and 16GB RAM:
    expanded_queries = translate(query, target_langs=['hi', 'bn', 'te'])
    ```
 
-## 9. Evaluation Strategy
 
-### 9.1 Metrics
-
-For evaluating against MIRACL benchmarks:
-
-1. **MRR@10**: Mean Reciprocal Rank at 10
-2. **Recall@100**: Recall at 100 documents
-3. **nDCG@10**: Normalized Discounted Cumulative Gain
-
-### 9.2 Implementation
-
-```python
-def evaluate(queries, qrels, retriever):
-    for query_id, query_text in queries:
-        results = retriever.retrieve(query_text, top_k=100)
-        # Compare with qrels[query_id]
-        # Calculate metrics
-```
-
-## 10. Conclusion
+## 9. Conclusion
 
 This multilingual IR system demonstrates a modern, scalable approach to cross-lingual information retrieval using:
 
