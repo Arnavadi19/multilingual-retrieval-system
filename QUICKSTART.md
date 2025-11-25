@@ -141,14 +141,32 @@ python main.py build --sample-size 5000
 - See `APPROACH.md` for technical details
 - Check `example.py` for programmatic usage
 
-## Tips
+## 💡 Tips
 
 1. **First Time**: Use `--sample-size 5000` to test quickly
 2. **Production**: Remove sample size limit for full corpus
 3. **GPU**: System automatically uses GPU if available
 4. **Persistence**: Index is saved and reused (no need to rebuild)
 5. **Languages**: System works with any query language, not just English!
+6. **Evaluation**: Run `python main.py evaluate` to measure performance with nDCG@10 and Recall@100
+
+## 📊 Evaluating Your System
+
+After building the index, you can evaluate retrieval performance:
+
+```bash
+# Evaluate on all languages (Hindi, Bengali, Telugu)
+python main.py evaluate
+
+# Quick test with limited queries
+python main.py evaluate --max-queries 20
+
+# Evaluate specific languages only
+python main.py evaluate --languages hindi bengali
+```
+
+See [`EVALUATION.md`](EVALUATION.md ) for detailed evaluation instructions and interpreting results.
 
 ---
 
-**Ready to explore multilingual information retrieval!**
+**Ready to explore multilingual information retrieval! 🌍**

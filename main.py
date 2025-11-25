@@ -12,6 +12,7 @@ from data_loader import DataLoader
 from embedder import MultilingualEmbedder
 from indexer import VectorIndex
 from retriever import CrossLingualRetriever
+from evaluator import IREvaluator
 
 logging.basicConfig(
     level=logging.INFO,
@@ -159,6 +160,49 @@ def interactive_search(top_k: int = DEFAULT_TOP_K):
             logger.error(f"Error during search: {e}")
 
 
+def evaluate(languages: list = None, split: str = 'dev', max_queries: int = None):
+    """
+    Evaluate the retrieval system using nDCG@10 and Recall@100 metrics.
+    
+    Args:
+        languages: List of languages to evaluate (default: all)
+        split: Dataset split to use ('dev' or 'train')
+        max_queries: Maximum number of queries per language (None for all)
+    """
+    logger.info("Starting evaluation...")
+    
+    # Load index
+    index = VectorIndex()
+    if not index.load():
+        logger.error("No index found. Please build the index first using: python main.py build")
+        return
+    
+    # Initialize components
+    embedder = MultilingualEmbedder()
+    retriever = CrossLingualRetriever(embedder, index)
+    
+    # Initialize evaluator
+    eval_languages = languages or list(LANGUAGES.keys())
+    evaluator = IREvaluator(retriever, languages=eval_languages)
+    
+    # Run evaluation
+    logger.info(f"Evaluating on {split} split for languages: {', '.join(eval_languages)}")
+    if max_queries:
+        logger.info(f"Limiting to {max_queries} queries per language")
+    
+    results = evaluator.evaluate_all_languages(
+        split=split,
+        ndcg_k=10,
+        recall_k=100,
+        max_queries=max_queries
+    )
+    
+    # Print summary
+    evaluator.print_evaluation_summary(results)
+    
+    logger.info("✅ Evaluation complete!")
+
+
 def main():
     parser = argparse.ArgumentParser(
         description='Multilingual Information Retrieval System',
@@ -179,6 +223,15 @@ Examples:
 
   # Search and show document text
   python main.py search "climate change effects" --show-text --top-k 5
+
+  # Evaluate retrieval performance (nDCG@10 and Recall@100)
+  python main.py evaluate
+
+  # Evaluate specific languages only
+  python main.py evaluate --languages hindi bengali
+
+  # Evaluate with limited queries (for quick testing)
+  python main.py evaluate --max-queries 50
         """
     )
     
@@ -204,6 +257,15 @@ Examples:
     interactive_parser.add_argument('--top-k', type=int, default=DEFAULT_TOP_K,
                                    help='Number of results to return per query')
     
+    # Evaluate command
+    evaluate_parser = subparsers.add_parser('evaluate', help='Evaluate retrieval performance')
+    evaluate_parser.add_argument('--languages', nargs='+', choices=list(LANGUAGES.keys()),
+                                help='Languages to evaluate (default: all)')
+    evaluate_parser.add_argument('--split', type=str, default='dev', choices=['dev', 'train'],
+                                help='Dataset split to use for evaluation')
+    evaluate_parser.add_argument('--max-queries', type=int, default=None,
+                                help='Maximum number of queries per language (default: all)')
+    
     args = parser.parse_args()
     
     if args.command == 'build':
@@ -212,6 +274,8 @@ Examples:
         search(args.query, top_k=args.top_k, show_text=args.show_text)
     elif args.command == 'interactive':
         interactive_search(top_k=args.top_k)
+    elif args.command == 'evaluate':
+        evaluate(languages=args.languages, split=args.split, max_queries=args.max_queries)
     else:
         parser.print_help()
 

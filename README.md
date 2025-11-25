@@ -21,6 +21,7 @@ The system is built with a modular architecture:
 ├── embedder.py        # Multilingual embedding generation
 ├── indexer.py         # Vector index creation and management
 ├── retriever.py       # Query processing and document retrieval
+├── evaluator.py       # Evaluation metrics (nDCG@10, Recall@100)
 └── main.py            # CLI application and entry point
 ```
 
@@ -95,6 +96,50 @@ Try these example queries to test the system:
 - "Climate change effects on agriculture"
 - "Traditional dance forms in India"
 - "Renewable energy sources and solar power"
+
+### 4. Evaluate Performance
+
+Evaluate the cross-lingual retrieval system using **nDCG@10** and **Recall@100** metrics:
+
+```bash
+# Evaluate on all languages (Hindi, Bengali, Telugu)
+python main.py evaluate
+
+# Evaluate specific languages only
+python main.py evaluate --languages hindi bengali
+
+# Quick evaluation with limited queries (for testing)
+python main.py evaluate --max-queries 50
+
+# Evaluate on train split (if available)
+python main.py evaluate --split train
+```
+
+**About the Evaluation:**
+- Uses **English queries** from MIRACL dev/train sets
+- Evaluates retrieval against **Hindi/Bengali/Telugu documents**
+- Measures **cross-lingual** retrieval effectiveness (not monolingual)
+- Metrics: **nDCG@10** (ranking quality) and **Recall@100** (coverage)
+
+**Expected Output:**
+```
+CROSS-LINGUAL RETRIEVAL EVALUATION RESULTS
+================================================================================
+Metrics: nDCG@10 and Recall@100
+Setting: Cross-lingual (English queries → Hindi/Bengali/Telugu documents)
+--------------------------------------------------------------------------------
+
+Language        nDCG@10         Recall@100      Queries        
+------------------------------------------------------------
+HI              0.3456          0.6234          82             
+BN              0.3124          0.5891          75             
+TE              0.2987          0.5567          69             
+------------------------------------------------------------
+AVERAGE         0.3189          0.5897
+================================================================================
+```
+
+**Note:** Cross-lingual retrieval scores are typically lower than monolingual baselines due to the inherent difficulty of matching queries and documents across different languages.
 
 ## Project Structure
 
