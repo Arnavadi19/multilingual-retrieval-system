@@ -41,6 +41,11 @@ BATCH_SIZE = 32  # Batch size for encoding documents
 # Index configuration
 INDEX_FILENAME = "multilingual_index.npz"
 METADATA_FILENAME = "document_metadata.json"
+FAISS_INDEX_FILENAME = "faiss_index.bin"
+
+# Indexing backend ('numpy' or 'faiss')
+DEFAULT_INDEX_BACKEND = 'numpy'  # Can be overridden via CLI
+USE_GPU_FOR_FAISS = True  # Use GPU for FAISS if available
 
 # Sample size for quick testing (set to None to use full corpus)
 # For production, set to None. For testing, use a smaller number like 5000

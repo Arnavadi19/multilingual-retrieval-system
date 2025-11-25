@@ -9,3 +9,14 @@ scikit-learn>=1.3.0
 
 # Optional but recommended
 tqdm>=4.65.0  # Progress bars (used by sentence-transformers)
+
+# FAISS for fast similarity search (optional - choose one based on your hardware)
+# For CPU-only systems:
+# faiss-cpu>=1.7.4
+# For GPU-enabled systems:
+# faiss-gpu>=1.7.4
+
+# Installation instructions:
+# - For CPU: pip install faiss-cpu
+# - For GPU: pip install faiss-gpu
+# - If FAISS is not installed, the system will automatically fall back to NumPy indexing

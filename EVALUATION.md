@@ -1,4 +1,4 @@
-# Evaluation Guide: Cross-Lingual Information Retrieval
+ # Evaluation Guide: Cross-Lingual Information Retrieval
 
 This document explains how to evaluate the multilingual IR system using **nDCG@10** and **Recall@100** metrics.
 

@@ -6,10 +6,12 @@ A professional-grade cross-lingual information retrieval (CLIR) system that enab
 
 - **Cross-Lingual Retrieval**: Queries are in English and are retrieved documents in Hindi, Bengali and Telugu
 - **Dense Vector Embeddings**: Uses state-of-the-art sentence-transformers for the semantic similarity
+- **Dual Indexing Backends**: Choose between NumPy (exact search) or FAISS (fast search with 25-50x speedup)
+- **GPU Acceleration**: Automatic GPU support for both embeddings and FAISS indexing
 - **Scalable Architecture**: Modular design with separate components for data loading, embedding, indexing and retrieval
 - **Persistent Index**: Save and load pre-computed embeddings for fast retrieval
 - **Interactive & CLI Modes**: Both command-line and interactive search interfaces
-- **GPU Support**: Automatic GPU acceleration when available
+- **Evaluation Framework**: Built-in nDCG@10 and Recall@100 metrics for IR quality assessment
 
 ## Architecture
 
@@ -50,6 +52,20 @@ The system is built with a modular architecture:
    pip install -r requirements.txt
    ```
 
+4. **Install FAISS (optional, but recommended for large corpora)**:
+   
+   For CPU-only systems:
+   ```bash
+   pip install faiss-cpu
+   ```
+   
+   For GPU-enabled systems:
+   ```bash
+   pip install faiss-gpu
+   ```
+   
+   **Note**: If FAISS is not installed, the system will automatically fall back to NumPy indexing (slower but works everywhere).
+
 ## Usage
 
 ### 1. Build the Index
@@ -57,23 +73,37 @@ The system is built with a modular architecture:
 First, you need to build the vector index from the MIRACL datasets:
 
 ```bash
-# Build index with full corpus (this may take time and memory)
+# Build index with NumPy backend (exact search, works everywhere)
 python main.py build
 
-# OR build with a sample for testing (recommended for first run)
+# OR build with FAISS backend (25-50x faster, requires FAISS installation)
+python main.py build --backend faiss
+
+# Use GPU acceleration for FAISS (if available)
+python main.py build --backend faiss --gpu
+
+# Build with a sample for testing (recommended for first run)
 python main.py build --sample-size 5000
 
 # Force rebuild if index already exists
 python main.py build --force-rebuild
 ```
+
+**Backend Selection:**
+- **NumPy** (default): Exact similarity search, works everywhere, slower for large datasets
+- **FAISS**: Fast approximate nearest neighbors, 25-50x faster, requires `faiss-cpu` or `faiss-gpu` installation
+
 The index will be saved to the `index/` directory for reuse.
 
 ### 2. Search with Queries
 
 #### Single Query Search:
 ```bash
-# Basic search
+# Basic search with NumPy backend
 python main.py search "What are the common foods in South India?"
+
+# Search with FAISS backend (faster)
+python main.py search "climate change effects" --backend faiss
 
 # Show document text in results
 python main.py search "climate change effects" --show-text --top-k 5
@@ -81,7 +111,14 @@ python main.py search "climate change effects" --show-text --top-k 5
 
 #### Interactive Mode:
 ```bash
+# Interactive mode with NumPy backend
 python main.py interactive
+
+# Interactive mode with FAISS backend
+python main.py interactive --backend faiss
+
+# Interactive mode with FAISS GPU acceleration
+python main.py interactive --backend faiss --gpu
 
 # Then enter queries interactively:
 # 🔍 Query: What are the major festivals in India?
@@ -102,6 +139,18 @@ Try these example queries to test the system:
 Evaluate the cross-lingual retrieval system using **nDCG@10** and **Recall@100** metrics:
 
 ```bash
+# Evaluate all languages with NumPy backend
+python main.py evaluate
+
+# Evaluate with FAISS backend (faster)
+python main.py evaluate --backend faiss
+
+# Evaluate specific languages only
+python main.py evaluate --languages hindi bengali
+
+# Quick evaluation with limited queries
+python main.py evaluate --max-queries 50
+```
 # Evaluate on all languages (Hindi, Bengali, Telugu)
 python main.py evaluate
 
